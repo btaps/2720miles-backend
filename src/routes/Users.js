@@ -51,6 +51,46 @@ const User = {
     }
   },
 
+  async updateEmail(req, res){
+    const findOneQuery = 'SELECT * FROM users WHERE id=$1'
+    const updateOneQuery = `UPDATE users 
+      SET email=$1,modified_date=$2
+      WHERE id=$3 returning *`
+    try{
+      const { rows } = await db.query(findOneQuery, [req.params.id])
+      if(!rows[0]) return res.status(404).send({'message': 'User not found'})
+      const values = [
+        req.body.email,
+        moment(new Date()),
+        req.params.id
+      ]
+      const response = await db.query(updateOneQuery, values)
+      return res.status(200).send(response.rows[0])
+    } catch(err){
+      return res.status(400).send(err)
+    }
+  },
+
+  async updatePassword(req, res){
+    const findOneQuery = 'SELECT * FROM users WHERE id=$1'
+    const updateOneQuery = `UPDATE users 
+      SET password=$1,modified_date=$2
+      WHERE id=$3 returning *`
+    try{
+      const { rows } = await db.query(findOneQuery, [req.params.id])
+      if(!rows[0]) return res.status(404).send({'message': 'User not found'})
+      const values = [
+        req.body.password,
+        moment(new Date()),
+        req.params.id
+      ]
+      const response = await db.query(updateOneQuery, values)
+      return res.status(200).send(response.rows[0])
+    } catch(err){
+      return res.status(400).send(err)
+    }
+  },
+
   async update(req, res){
     const findOneQuery = 'SELECT * FROM users WHERE id=$1'
     const updateOneQuery = `UPDATE users 

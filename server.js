@@ -9,7 +9,15 @@ dotenv.config()
 
 const app = express()
 const PORT = 8080
+const setCORS = (request, response, next) => {
+  response.setHeader('Access-Control-Allow-Origin', '*')
+  response.setHeader('Access-Control-Allow-Headers', '*')
+  response.setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE")
+  next()
+}
+
 app.use(express.json())
+app.use(setCORS)
 
 app.get('/', (req, res) => {
   return res.status(200).send({'message': 'YAY! Congratulations! Your first endpoint is working'});

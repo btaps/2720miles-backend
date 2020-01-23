@@ -8,8 +8,6 @@ const User = {
   
   async create(req, res){
 
-
-
     const text = 
       `INSERT INTO
        users(id, first_name, last_name, email, password, created_date, modified_date)
@@ -28,9 +26,9 @@ const User = {
 
     try{
       const { rows } = await db.query(text, values)
-      return res.status(201).send(rows[0])
+	    return res.status(201).send({user:rows[0], "message": "Profile created"})
     } catch(err){
-      return res.status(400).send(err)
+      return res.status(400).send({err})
     }
   },
 

@@ -1,23 +1,27 @@
 import moment from 'moment'
 import uuidv4 from 'uuid/v4'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import db from '../db'
-
 
 const User = {
   
   async create(req, res){
+
+
+
     const text = 
       `INSERT INTO
        users(id, first_name, last_name, email, password, created_date, modified_date)
        VALUES($1, $2, $3, $4, $5, $6, $7)
-       returning *
-      `
+       returning *`
+
     const values = [
       uuidv4(),
       req.body.first_name,
       req.body.last_name,
       req.body.email,
-      req.body.password,
+      bcrypt.hashSync(req.body.password, 10),
       moment(new Date()),
       moment(new Date()),
     ]
@@ -37,6 +41,34 @@ const User = {
       return res.status(200).send({ rows, rowCount })
     } catch(err) {
       return res.status(400).send(err)
+    }
+  },
+
+  async login(req, res){
+    const text = 'SELECT * FROM users WHERE email=$1'
+    
+    try{
+      const { rows } = await db.query(text, [req.body.email])
+      if(!rows[0]) return res.status(404).send({'message': 'User not found'})
+      bcrypt.compare(req.body.password, rows[0].password, (err, isMatch)=>{
+        if(err){
+	  return res.status(400).send({'message': 'Hash problems'})
+	}else if(isMatch){
+	  let user={ id: rows[0].id}  
+	  jwt.sign(user, 'pooja', { expiresIn: '1hr'}, (err, token)=>{
+	    if(err) return res.status(400).send({"message": "Problem signing jwt"})
+	    res.status(200).json({
+              status: 200,
+              message: 'Success!',
+              id: rows[0].id,
+              token
+	    })
+	  })
+	}else return res.status(400).send({ "err": err, "message": "Username or password incorrect"})
+      })
+      
+    } catch(err){
+	    return res.status(400).send({ "err": err, "message": "Username or password incorrect"})
     }
   },
 

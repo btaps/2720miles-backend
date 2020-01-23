@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/api/users', User.create)
+app.post('/api/users/login', User.login)
 app.get('/api/users', User.getAll)
 app.get('/api/users/:id', User.getOne)
 app.put('/api/users/:id', User.update)

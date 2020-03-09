@@ -13,9 +13,9 @@ const router = express.Router();
  * PROFILE IMAGE STORING STARTS
  */
 const s3 = new aws.S3({
-  accessKeyId: "AKIA4YLFTA7WL3UD5DW3",
-  secretAccessKey: "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",
-  Bucket: "2720miles-bucket"
+  accessKeyId: process.env.AWS_KEY_ID,
+  secretAccessKey: process.env.AWS_ACCESS_KEY,
+  Bucket: process.env.BUCKET
 });
 
 /**

@@ -1,17 +1,16 @@
-const { Pool } = require('pg')
-const dotenv = require('dotenv')
+const { Pool } = require("pg");
+const dotenv = require("dotenv");
 
-dotenv.config()
+dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL 
-})
+  connectionString: process.env.DATABASE_URL
+});
 
-pool.on('connect', ()=> console.log('connected to db'))
+pool.on("connect", () => console.log("connected to db"));
 
-const createUsersTable = ()=> {
-  const queryText = 
-	`
+const createUsersTable = () => {
+  const queryText = `
         CREATE TABLE IF NOT EXISTS
 	users(
           id UUID PRIMARY KEY,
@@ -21,22 +20,22 @@ const createUsersTable = ()=> {
 	  password VARCHAR(100) NOT NULL,
 	  created_date TIMESTAMP,
 	  modified_date TIMESTAMP
-	);`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
-    })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+	);`;
 
-const createProductsTable = ()=> {
-  const queryText = 
-	`
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
+    })
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
+
+const createProductsTable = () => {
+  const queryText = `
         CREATE TABLE IF NOT EXISTS
 	products(
           id SERIAL PRIMARY KEY,
@@ -49,101 +48,105 @@ const createProductsTable = ()=> {
 	  quantity INT,
 	  created_date TIMESTAMP,
 	  modified_date TIMESTAMP
-	);`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
-    })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+	);`;
 
-const createCategoriesTable = ()=> {
-  const queryText = 
-	`
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
+    })
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
+
+const createCategoriesTable = () => {
+  const queryText = `
         CREATE TABLE IF NOT EXISTS
 	categories(
           id SERIAL PRIMARY KEY,
 	  name TEXT
-	)`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
-    })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+	)`;
 
-const dropUsersTable = ()=>{
-  const queryText = `DROP TABLE users`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
     })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
 
-const dropProductsTable = ()=>{
-  const queryText = `DROP TABLE products`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
-    })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+const dropUsersTable = () => {
+  const queryText = `DROP TABLE users`;
 
-const dropCategoriesTable = ()=>{
-  const queryText = `DROP TABLE categories`
-  
-  pool.query(queryText)
-    .then(res=>{
-      console.log(res)
-      pool.end()
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
     })
-    .catch(err=>{
-      console.log(err)
-      pool.end()
-    })
-}
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
 
-const createAllTables = ()=>{
+const dropProductsTable = () => {
+  const queryText = `DROP TABLE products`;
+
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
+    })
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
+
+const dropCategoriesTable = () => {
+  const queryText = `DROP TABLE categories`;
+
+  pool
+    .query(queryText)
+    .then(res => {
+      console.log(res);
+      pool.end();
+    })
+    .catch(err => {
+      console.log(err);
+      pool.end();
+    });
+};
+
+const createAllTables = () => {
   createUsersTable();
   createProductsTable();
   createCategoriesTable();
-}
+};
 
-const dropAllTables = ()=>{
+const dropAllTables = () => {
   dropUsersTable();
   dropProductsTable();
   dropCategoriesTable();
-}
+};
 
-pool.on('remove', ()=>{
-  console.log('client removed')
-  process.exit(0)
-})
+pool.on("remove", () => {
+  console.log("client removed");
+  process.exit(0);
+});
 
 module.exports = {
   createAllTables,
   dropAllTables
-}
+};
 
-require('make-runnable')
+require("make-runnable");

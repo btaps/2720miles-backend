@@ -39,7 +39,7 @@ const createProductsTable = () => {
         CREATE TABLE IF NOT EXISTS
 	products(
           id SERIAL PRIMARY KEY,
-	  product_cat_id INT,
+	  product_cat_id INT [],
 	  name TEXT,
 	  price TEXT,
 	  description TEXT,
@@ -81,6 +81,27 @@ const createCategoriesTable = () => {
       pool.end();
     });
 };
+
+//const createCategoriesProductsJoinTable = () => {
+//const queryText = `
+//CREATE TABLE IF NOT EXISTS
+//categories_products(
+//id SERIAL PRIMARY KEY,
+//categories_id INT,
+//products_id INT
+//)`;
+
+//pool
+//.query(queryText)
+//.then(res => {
+//console.log(res);
+//pool.end();
+//})
+//.catch(err => {
+//console.log(err);
+//pool.end();
+//});
+//};
 
 const dropUsersTable = () => {
   const queryText = `DROP TABLE users`;
@@ -127,16 +148,33 @@ const dropCategoriesTable = () => {
     });
 };
 
+//const dropCategoriesProductsJoinTable = () => {
+//const queryText = `DROP TABLE categories_products`;
+
+//pool
+//.query(queryText)
+//.then(res => {
+//console.log(res);
+//pool.end();
+//})
+//.catch(err => {
+//console.log(err);
+//pool.end();
+//});
+//};
+
 const createAllTables = () => {
   createUsersTable();
   createProductsTable();
   createCategoriesTable();
+  //createCategoriesProductsJoinTable();
 };
 
 const dropAllTables = () => {
   dropUsersTable();
   dropProductsTable();
   dropCategoriesTable();
+  //dropCategoriesProductsJoinTable();
 };
 
 pool.on("remove", () => {

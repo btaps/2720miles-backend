@@ -8,7 +8,7 @@ This application using Node.js and Express.js writing RESTful api's for frontend
 http://2720miles.co/
 
 ## Frontend
-https://github.com/btaps/2720miles-backend
+https://github.com/btaps/2720miles-frontend
 
 # What's under the hood?
 
